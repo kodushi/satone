@@ -31,7 +31,7 @@ const antiSpam = new AntiSpam({
 });
 const curseWords = require('./cursewords.js')
 
-const prefix = "c!";
+const prefix = "s!";
 const guildId = "799819756914868264";
 let amountof = "0";
 require("./ExtendedMessage");
@@ -40,7 +40,7 @@ const { default: messageHandler } = require("wokcommands/dist/message-handler");
 module.exports = { amountof: `${amountof}` };
 
 client.on("ready", () => {
-	client.user.setActivity('chat', { type: 'WATCHING' });
+	client.user.setActivity('the chat!', { type: 'WATCHING' });
 });
 
 client.on("ready", () => {
@@ -58,7 +58,7 @@ client.on("message", (msg) => {
       let user = msg.author;
 	if (!msg.member.guild.me.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("I don't have the required permissions to censor this.")
       const embed = new Discord.MessageEmbed()
-        .setColor("#FF0000")
+        .setColor("#DE3163")
         .setTitle("Your message has been moderated")
         .setDescription("Do not send this again")
         .addFields({ name: "Message Moderated:", value: censored })
@@ -143,7 +143,7 @@ client.on("message", (msg) => {
       kickreply = `Kicked ${user.tag}. No reason was given`;
     }
     const embed = new Discord.MessageEmbed()
-      .setColor("#FF0000")
+      .setColor("#DE3163")
       .setTitle(`You have been kicked.`)
       .setDescription("You may rejoin if someone reinvites you")
       .addFields({ name: "Reason:", value: kickreason })
@@ -219,7 +219,7 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       .setTitle("You have been muted")
       .setDescription(`You will be unmuted in 30 minutes`)
       .addFields({ name: "Reason", value: mutereason })
-      .setFooter("Takanashi")
+      .setFooter("Satone")
       .setTimestamp();
     const member = msg.guild.members.resolve(user);
     if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.highest.position) return msg.inlineReply("My role is too low :c");
@@ -252,7 +252,7 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       .setColor("#FF0000")
       .setTitle("You have been unmuted")
       .setDescription(`A moderator has unmuted you!`)
-      .setFooter("Takanashi")
+      .setFooter("Satone")
       .setTimestamp();
 
     user.send(embed);
@@ -275,17 +275,17 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
 
   if (command === "help") {
     const embed = new Discord.MessageEmbed()
-      .setColor("#FFB6C1")
-      .setTitle("Takanashi")
+      .setColor("#DE3163")
+      .setTitle("Satone")
       .setDescription("Multipurpose Moderation & Censorship Bot")
       .setThumbnail(
-        "https://media.tenor.com/images/451cd65d6a3f7a34c7378e54f81f32c1/tenor.gif"
+        "https://steamuserimages-a.akamaihd.net/ugc/914660923638373070/DD6C61EDD789ACCD0AD1243FC34439D526E79D88/"
       )
       .addFields(
         {
           name: "Commands",
           value:
-            "These commands are still in development, and some may not work. Prefix: c!",
+            "These commands are still in development, and some may not work. Prefix: s!",
         },
         {
           name: "Slowmode",
