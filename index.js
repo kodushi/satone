@@ -279,7 +279,7 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       .setTitle("Satone")
       .setDescription("Multipurpose Moderation & Censorship Bot")
       .setThumbnail(
-        "https://steamuserimages-a.akamaihd.net/ugc/914660923638373070/DD6C61EDD789ACCD0AD1243FC34439D526E79D88/"
+        "https://kodushi.com/satone.gif"
       )
       .addFields(
         {
