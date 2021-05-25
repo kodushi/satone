@@ -326,9 +326,9 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
             "Allows a user to speak if they were previously muted. s!unmute <@user>",
           inline: true,
         },
-        { name: "Play", value: "Plays a song! s!play <Song name>" },
-	      { name: "Stop", value: "Stops the current song", },
-	      { name: "Skip", value: "Skips the song", }
+        { name: "Play", value: "Plays a song, or adds to the queue! s!play <Song name>" },
+	      { name: "Stop", value: "Stops the current song! s!skip", },
+	      { name: "Skip", value: "Skips the song! s!stop", }
       )
     	
       .setFooter("Created by zenyxis#0001")
