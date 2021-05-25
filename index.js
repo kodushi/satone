@@ -366,8 +366,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
 
           let song = {
               title: songInfo.videoDetails.title,
-              url: songInfo.videoDetails.video_url,
-	      thumbnail: songInfo.videoDetails.thumbnail_url
+              url: songInfo.videoDetails.video_url
           };
 
           if(!serverQueue){
@@ -394,7 +393,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
               }
           }else{
               serverQueue.songs.push(song);
-              const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`).setThumbnail(`${song.thumbnail}`)
+              const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`)
               return message.channel.send(addEmbed);
           }
       }
@@ -412,7 +411,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
               serverQueue.songs.shift();
               play(guild, serverQueue.songs[0]);
           })
-          const playEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Now Playing").setDescription(`${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}`).setThumbnail(`${serverQueue.songs[0].thumbnail}`)
+          const playEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Now Playing").setDescription(`${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}`)
           serverQueue.txtChannel.send(playEmbed)
   }
   function stop (message, serverQueue){
