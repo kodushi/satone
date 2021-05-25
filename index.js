@@ -76,7 +76,7 @@ client.on("message", (message) => {
         .setTimestamp();
 
       const otherembed = new Discord.MessageEmbed()
-        .setColor("#FF0000")
+        .setColor("#DE3163")
         .setTitle("Message Moderated")
         .setDescription(`${user.username}, do not send this again.`);
 
