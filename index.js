@@ -6,6 +6,17 @@ const client = new Client({
     repliedUser: true,
   },
 });
+
+const ytdl = require('ytdl-core')
+const { YTSearcher } = require('ytsearcher')
+
+const searcher = new YTSearcher({
+    key: "AIzaSyBANPjMvndZGgLYJWg0gvtl9QTUZlBYlj8",
+    revealed: true
+})
+
+const queue = new Map()
+
 const AntiSpam = require('discord-anti-spam');
 const antiSpam = new AntiSpam({
 	warnThreshold: 5, // Amount of messages sent in a row that will cause a warning.
@@ -50,13 +61,13 @@ client.on("ready", () => {
   });
 });
 
-client.on("message", (msg) => {
+client.on("message", (message) => {
   for (var i = 0; i < curseWords.length; i++) {
-    if (msg.content.includes(curseWords[i]) && !msg.author.bot) {
+    if (message.content.includes(curseWords[i]) && !message.author.bot) {
       amountof++;
-      let censored = msg.content;
-      let user = msg.author;
-	if (!msg.member.guild.me.hasPermission("MANAGE_MESSAGES")) return msg.channel.send("I don't have the required permissions to censor this.")
+      let censored = message.content;
+      let user = message.author;
+	if (!message.member.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I don't have the required permissions to censor this.")
       const embed = new Discord.MessageEmbed()
         .setColor("#DE3163")
         .setTitle("Your message has been moderated")
@@ -69,75 +80,75 @@ client.on("message", (msg) => {
         .setTitle("Message Moderated")
         .setDescription(`${user.username}, do not send this again.`);
 
-      let myRole = msg.guild.roles.cache.find((role) => role.name === "Muted");
-      msg.author.send(embed);
-      msg.channel.send(otherembed);
-      msg.delete();
+      let myRole = message.guild.roles.cache.find((role) => role.name === "Muted");
+      message.author.send(embed);
+      message.channel.send(otherembed);
+      message.delete();
       console.log(`${user.tag} was moderated for ${censored}`);
     }
   }
 
-  if (msg.content === prefix + "count") {
-    msg.inlineReply("I have moderated " + amountof + " words!");
+  if (message.content === prefix + "count") {
+    message.inlineReply("I have moderated " + amountof + " words!");
   }
 
   if (
-    msg.content === prefix + "shutdown" &&
-    msg.author.id === "734286347858083863"
+    message.content === prefix + "shutdown" &&
+    message.author.id === "734286347858083863"
   ) {
-    msg.inlineReply("Shutting down in 5 seconds");
+    message.inlineReply("Shutting down in 5 seconds");
     setTimeout(function () {
       client.destroy();
-      msg.delete();
+      message.delete();
     }, 5000);
   }
-  if (msg.author.bot) return;
-  if (msg.content.indexOf(prefix) !== 0) return;
+  if (message.author.bot) return;
+  if (message.content.indexOf(prefix) !== 0) return;
 
-  const args = msg.content.slice(prefix.length).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   if (command === "slowmode") {
     let slowtime = args[0];
     let slowreason = args[1];
     
-    if (!msg.member.guild.me.hasPermission("MANAGE_CHANNELS")) return msg.inlineReply("I don't have the required permissions!")
-    if (!msg.member.hasPermission("MANAGE_CHANNELS")) return msg.inlineReply("You don't have the required permissions!")
+    if (!message.member.guild.me.hasPermission("MANAGE_CHANNELS")) return message.inlineReply("I don't have the required permissions!")
+    if (!message.member.hasPermission("MANAGE_CHANNELS")) return message.inlineReply("You don't have the required permissions!")
     if (!slowtime) {
       slowtime = 30;
     }
-    if (slowtime < 0) return msg.inlineReply("I can't go back in time. (Please use a positive number)")
-    if (isNaN(slowtime)) return msg.inlineReply("Alphabetical times don't exist, sorry! (c!slowmode <time> <reason>)")
+    if (slowtime < 0) return message.inlineReply("I can't go back in time. (Please use a positive number)")
+    if (isNaN(slowtime)) return message.inlineReply("Alphabetical times don't exist, sorry! (c!slowmode <time> <reason>)")
     let slowreply = `Set a ${slowtime} second slowmode for: ${slowreason}`;
     if (!slowreason) {
       slowreply = `Set a ${slowtime} second slowmode. No reason was given`;
     }
 
     if (args[0] > 21600)
-      return msg.inlineReply("Sorry, please try a lower number (Max 21600)");
+      return message.inlineReply("Sorry, please try a lower number (Max 21600)");
     if (args[0] === "0" || args[0] === "off") {
       slowreply = `Turned slowmode off`;
-      msg.channel.setRateLimitPerUser(0, args[1]);
+      message.channel.setRateLimitPerUser(0, args[1]);
       slowtime = 0;
     }
-    if (isNaN(slowtime)) return msg.inlineReply("Alphabetical times don't exist, sorry! (c!slowmode <time> <reason>)")
-    msg.channel.setRateLimitPerUser(slowtime, args[1]);
-    msg.inlineReply(`${slowreply}`);
+    if (isNaN(slowtime)) return message.inlineReply("Alphabetical times don't exist, sorry! (c!slowmode <time> <reason>)")
+    message.channel.setRateLimitPerUser(slowtime, args[1]);
+    message.inlineReply(`${slowreply}`);
   }
 
   if (command === "kick") {
-    const user = msg.mentions.users.first();
+    const user = message.mentions.users.first();
     let kickreason = args[1];
-    if (!msg.member.hasPermission("KICK_MEMBERS"))
-      return msg.inlineReply("You do not have permission to use kick");
-    if (!msg.member.guild.me.hasPermission("KICK_MEMBERS"))
-      return msg.inlineReply(
+    if (!message.member.hasPermission("KICK_MEMBERS"))
+      return message.inlineReply("You do not have permission to use kick");
+    if (!message.member.guild.me.hasPermission("KICK_MEMBERS"))
+      return message.inlineReply(
         "I don't have the required permissions. Please fix this in settings"
       );
-    if (!user) return msg.inlineReply("Please mention a valid user");
+    if (!user) return message.inlineReply("Please mention a valid user");
     if (user === client.user)
-      return msg.inlineReply("Why would you kick me :(");
-    if (user.kickable) return msg.inlineReply("I cannot kick this user");
+      return message.inlineReply("Why would you kick me :(");
+    if (user.kickable) return message.inlineReply("I cannot kick this user");
     let kickreply = `Kicked ${user.tag} for ${kickreason}`;
     if (!kickreason) {
       kickreply = `Kicked ${user.tag}. No reason was given`;
@@ -149,29 +160,29 @@ client.on("message", (msg) => {
       .addFields({ name: "Reason:", value: kickreason })
       .setFooter(`Takanashi`)
       .setTimestamp();
-    const member = msg.guild.members.resolve(user);
-if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.highest.position) return msg.inlineReply("My role is too low :c");
+    const member = message.guild.members.resolve(user);
+if(member.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.inlineReply("My role is too low :c");
     user.send(embed);
-    msg.inlineReply(kickreply);
+    message.inlineReply(kickreply);
     member.kick();
   }
 
   if (command === "ban") {
-    const user = msg.mentions.users.first();
+    const user = message.mentions.users.first();
     let banreason = args[2];
     let banlong = args[1];
-    if (!msg.member.hasPermission("BAN_MEMBERS"))
-      return msg.inlineReply("You do not have permission to ban members");
-    if (!msg.member.guild.me.hasPermission("BAN_MEMBERS"))
-      return msg.inlineReply(
+    if (!message.member.hasPermission("BAN_MEMBERS"))
+      return message.inlineReply("You do not have permission to ban members");
+    if (!message.member.guild.me.hasPermission("BAN_MEMBERS"))
+      return message.inlineReply(
         "I don't have the required permission to ban users. Please fix this in settings"
       );
-    if (!user) return msg.inlineReply("Please mention a valid user");
-    if (user === client.user) return msg.inlineReply("Why would you ban me :(");
-    if (user.bannable) return msg.inlineReply("I cannot ban this user");
-    if (!msg.member.guild.me.hasPermission("SEND_MESSAGES"))
-      return msg.author.send("I cannot send messages in that channel");
-    if (isNaN(banlong) && banlong) return msg.inlineReply("Second argument must be a time. (c!ban <time (default 7 days)> <reason (optional)>)")
+    if (!user) return message.inlineReply("Please mention a valid user");
+    if (user === client.user) return message.inlineReply("Why would you ban me :(");
+    if (user.bannable) return message.inlineReply("I cannot ban this user");
+    if (!message.member.guild.me.hasPermission("SEND_MESSAGES"))
+      return message.author.send("I cannot send messages in that channel");
+    if (isNaN(banlong) && banlong) return message.inlineReply("Second argument must be a time. (c!ban <time (default 7 days)> <reason (optional)>)")
     if (!banlong) {
       banlong = 7;
     }
@@ -179,7 +190,7 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
     if (!banreason) {
       banreply = `Banned user ${user.tag} for ${banlong} days. No reason was given`;
     }
-    if (banlong < 0) return msg.inlineReply("I can't ban for negative days. (Please use a positive number)")
+    if (banlong < 0) return message.inlineReply("I can't ban for negative days. (Please use a positive number)")
     const embed = new Discord.MessageEmbed()
       .setColor("#FF0000")
       .setTitle("You have been banned.")
@@ -187,32 +198,32 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       .addFields({ name: "Reason", value: banreason })
       .setFooter("Takanashi")
       .setTimestamp();
-    const member = msg.guild.members.resolve(user);
-    if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.highest.position) return msg.inlineReply("My role is too low :c");
+    const member = message.guild.members.resolve(user);
+    if(member.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.inlineReply("My role is too low :c");
     
     user.send(embed);
-    msg.inlineReply(banreply);
+    message.inlineReply(banreply);
     member.ban({ days: banlong, reason: banreason });
   }
 
   if (command === "mute") {
-    const user = msg.mentions.users.first();
-    let mutedrole = msg.guild.roles.cache.find((role) => role.name === "Muted");
+    const user = message.mentions.users.first();
+    let mutedrole = message.guild.roles.cache.find((role) => role.name === "Muted");
     let mutereason = args[1];
-    if (!msg.member.hasPermission("MANAGE_ROLES"))
-      return msg.inlineReply("You do not have permission to mute this user");
-    if (!msg.member.guild.me.hasPermission("MANAGE_ROLES"))
-      return msg.inlineReply(
+    if (!message.member.hasPermission("MANAGE_ROLES"))
+      return message.inlineReply("You do not have permission to mute this user");
+    if (!message.member.guild.me.hasPermission("MANAGE_ROLES"))
+      return message.inlineReply(
         "I cannot mute this user. Please fix this in settings"
       );
-    if (!user) return msg.inlineReply("Please mention a valid user");
+    if (!user) return message.inlineReply("Please mention a valid user");
     if (user === client.user)
-      return msg.inlineReply("Why would you mute me :(");
+      return message.inlineReply("Why would you mute me :(");
     let mutereply = `Muted user ${user.tag} for ${mutereason}. This mute is 30 minutes long.`;
     if (!mutereason) {
       mutereply = `Muted user ${user.tag}. No reason was given`;
     }
-    if (!mutedrole) return msg.inlineReply("No muted role found.");
+    if (!mutedrole) return message.inlineReply("No muted role found.");
 
     const embed = new Discord.MessageEmbed()
       .setColor("#FF0000")
@@ -221,12 +232,12 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       .addFields({ name: "Reason", value: mutereason })
       .setFooter("Satone")
       .setTimestamp();
-    const member = msg.guild.members.resolve(user);
-    if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.highest.position) return msg.inlineReply("My role is too low :c");
+    const member = message.guild.members.resolve(user);
+    if(member.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.inlineReply("My role is too low :c");
     if (member.roles.cache.has(mutedrole))
-      return msg.inlineReply("This user is already muted");
+      return message.inlineReply("This user is already muted");
     user.send(embed);
-    msg.inlineReply(mutereply);
+    message.inlineReply(mutereply);
     member.roles.add(mutedrole);
 
     setTimeout(() => {
@@ -235,19 +246,19 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
   }
 
   if (command === "unmute") {
-    const user = msg.mentions.users.first();
-    let mutedrole = msg.guild.roles.cache.find((role) => role.name === "Muted");
-    if (!msg.member.hasPermission("MANAGE_ROLES"))
-      return msg.inlineReply("You do not have permission to mute this user");
-    if (!msg.member.guild.me.hasPermission("MANAGE_ROLES"))
-      return msg.inlineReply(
+    const user = message.mentions.users.first();
+    let mutedrole = message.guild.roles.cache.find((role) => role.name === "Muted");
+    if (!message.member.hasPermission("MANAGE_ROLES"))
+      return message.inlineReply("You do not have permission to mute this user");
+    if (!message.member.guild.me.hasPermission("MANAGE_ROLES"))
+      return message.inlineReply(
         "I cannot unmute this user. Please fix this in settings"
       );
-    if (!user) return msg.inlineReply("Please mention a valid user");
-    const member = msg.guild.members.resolve(user);
-if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.highest.position) return msg.inlineReply("My role is too low :c");
+    if (!user) return message.inlineReply("Please mention a valid user");
+    const member = message.guild.members.resolve(user);
+if(member.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.inlineReply("My role is too low :c");
     if (member.roles.cache.has(mutedrole))
-      return msg.inlineReply("This user is not muted");
+      return message.inlineReply("This user is not muted");
     const embed = new Discord.MessageEmbed()
       .setColor("#FF0000")
       .setTitle("You have been unmuted")
@@ -257,18 +268,18 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
 
     user.send(embed);
     member.roles.remove(mutedrole);
-    msg.inlineReply(`Unmuted ${user.tag}`);
+    message.inlineReply(`Unmuted ${user.tag}`);
   }
 
   /* if (command === "role") {
-    const user = msg.mentions.users.first();
+    const user = message.mentions.users.first();
     const rolese = args[1]
-    let role = msg.guild.roles.cache.find(role => role.name === rolese)
-    if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.inlineReply("You do not have permision to add roles")
-    if (!user) return msg.inlineReply("Please mention a valid user")
-    if (!msg.member.guild.me.hasPermission("MANAGE_ROLES")) return msg.inlineReply("I don't have permission to manage roles :(")
-    if (!role) return msg.inlineReply("No role found")
-    const member = msg.guild.members.resolve(user);
+    let role = message.guild.roles.cache.find(role => role.name === rolese)
+    if (!message.member.hasPermission("MANAGE_ROLES")) return message.inlineReply("You do not have permision to add roles")
+    if (!user) return message.inlineReply("Please mention a valid user")
+    if (!message.member.guild.me.hasPermission("MANAGE_ROLES")) return message.inlineReply("I don't have permission to manage roles :(")
+    if (!role) return message.inlineReply("No role found")
+    const member = message.guild.members.resolve(user);
 
     member.roles.add(role)
   } */
@@ -319,10 +330,103 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
       )
       .setFooter("Created by zenyxis#0001")
       .setTimestamp();
-    msg.channel.send(embed);
+    message.channel.send(embed);
   }
-  antiSpam.message(msg)
-});
 
+
+
+
+  antiSpam.message(message)
+ 
+  const serverQueue = queue.get(message.guild.id);
+
+
+
+  if(command === "play" || command === "p") {
+          execute(message, serverQueue);
+  }
+      if(command === "stop" || command === "end" || command === "die") {
+          stop(message, serverQueue);
+      }
+ 
+  if(command === "skip" || command === "s" || command === "next") {
+          skip(message, serverQueue);
+  }
+
+  async function execute(message, serverQueue){
+      let vc = message.member.voice.channel;
+      if(!vc){
+          return message.channel.send("Please join a voice chat first");
+      }else{
+          let result = await searcher.search(args.join(" "), { type: "video" })
+          const songInfo = await ytdl.getInfo(result.first.url)
+
+          let song = {
+              title: songInfo.videoDetails.title,
+              url: songInfo.videoDetails.video_url
+          };
+
+          if(!serverQueue){
+              const queueConstructor = {
+                  txtChannel: message.channel,
+                  vChannel: vc,
+                  connection: null,
+                  songs: [],
+                  volume: 10,
+                  playing: true
+              };
+              queue.set(message.guild.id, queueConstructor);
+
+              queueConstructor.songs.push(song);
+
+              try{
+                  let connection = await vc.join();
+                  queueConstructor.connection = connection;
+                  play(message.guild, queueConstructor.songs[0]);
+              }catch (err){
+                  console.error(err);
+                  queue.delete(message.guild.id);
+                  return message.channel.send(`Unable to join the voice chat ${err}`)
+              }
+          }else{
+              serverQueue.songs.push(song);
+              const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`)
+              return message.channel.send(addEmbed);
+          }
+      }
+  }
+  function play(guild, song){
+      const serverQueue = queue.get(guild.id);
+      if(!song){
+          serverQueue.vChannel.leave();
+          queue.delete(guild.id);
+          return;
+      }
+      const dispatcher = serverQueue.connection
+          .play(ytdl(song.url))
+          .on('finish', () =>{
+              serverQueue.songs.shift();
+              play(guild, serverQueue.songs[0]);
+          })
+          const playEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Now Playing").setDescription(`${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}`)
+          serverQueue.txtChannel.send(playEmbed)
+  }
+  function stop (message, serverQueue){
+      if(!message.member.voice.channel)
+          return message.channel.send("You need to join the voice chat first!")
+      serverQueue.songs = [];
+      serverQueue.connection.dispatcher.end();
+      message.inlineReply(":thumbsup:")
+  }
+  function skip (message, serverQueue){
+      if(!message.member.voice.channel)
+          return message.channel.send("You need to join the voice chat first");
+      if(!serverQueue)
+          return message.channel.send("There is nothing to skip!");
+      serverQueue.connection.dispatcher.end();
+  }
+
+
+});
 
 client.login(process.env.DISCORD_TOKEN);
