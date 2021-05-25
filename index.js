@@ -326,8 +326,11 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
             "Allows a user to speak if they were previously muted. s!unmute <@user>",
           inline: true,
         },
-        { name: "Role", value: "COMING SOON" }
+        { name: "Play", value: "Plays a song! s!play <Song name>" },
+	      { name: "Stop", value: "Stops the current song", },
+	      { name: "Skip", value: "Skips the song", },
       )
+    	
       .setFooter("Created by zenyxis#0001")
       .setTimestamp();
     message.channel.send(embed);
