@@ -328,7 +328,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
         },
         { name: "Play", value: "Plays a song! s!play <Song name>" },
 	      { name: "Stop", value: "Stops the current song", },
-	      { name: "Skip", value: "Skips the song", },
+	      { name: "Skip", value: "Skips the song", }
       )
     	
       .setFooter("Created by zenyxis#0001")
