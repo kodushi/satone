@@ -289,30 +289,30 @@ if(member.roles.highest.position > msg.guild.members.resolve(client.user).roles.
         },
         {
           name: "Slowmode",
-          value: "Sets a slowmode. c!slowmode <time (in seconds)> <reason>",
+          value: "Sets a slowmode. s!slowmode <time (in seconds)> <reason>",
           inline: true,
         },
         {
           name: "Ban",
           value:
-            "Disallows a user from joining the server until the ban is revoked. c!ban <@user> <time (Default 7 days)> <reason>",
+            "Disallows a user from joining the server until the ban is revoked. s!ban <@user> <time (Default 7 days)> <reason>",
           inline: true,
         },
         {
           name: "Kick",
           value:
-            "Kicks a user, they may rejoin with an invite. c!kick <@user> <reason>",
+            "Kicks a user, they may rejoin with an invite. s!kick <@user> <reason>",
           inline: true,
         },
         {
           name: "Mute",
-          value: "Disallows a user from speaking until unmuted. c!mute <@user>",
+          value: "Disallows a user from speaking until unmuted. s!mute <@user>",
           inline: true,
         },
         {
           name: "Unmute",
           value:
-            "Allows a user to speak if they were previously muted. c!unmute <@user>",
+            "Allows a user to speak if they were previously muted. s!unmute <@user>",
           inline: true,
         },
         { name: "Role", value: "COMING SOON" }
