@@ -394,7 +394,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
               }
           }else{
               serverQueue.songs.push(song);
-              const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`).setThumbnail(`${serverQueue.songs[0].thumbnail}`)
+              const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`).setThumbnail(`${song.thumbnail}`)
               return message.channel.send(addEmbed);
           }
       }
