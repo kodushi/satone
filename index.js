@@ -439,11 +439,11 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   	if(!serverQueue) return message.inlineReply(noneEmbed)
 	let queueEmbed
 	
-	if(serverQueue.songs.length === 3) { 
-		queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n${serverQueue.songs[1].title}\n${serverQueue.songs[2].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	if(serverQueue.songs.length === 3 || serverQueue.songs.length >= 4) { 
+		queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n\n${serverQueue.songs[1].title}\n\n${serverQueue.songs[2].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
 	}
 	if(serverQueue.songs.length === 2) {
-	    queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n${serverQueue.songs[1].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	    queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n\n${serverQueue.songs[1].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
 	}
 	if(serverQueue.songs.length === 1) {
 	    queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
