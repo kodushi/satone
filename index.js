@@ -355,6 +355,9 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   if(command === "skip" || command === "s" || command === "next") {
           skip(message, serverQueue);
   }
+  if(command === "queue" || command === "q" || command === "songs") {
+  	  listQueue(serverQueue)
+  }
 
   async function execute(message, serverQueue){
       let vc = message.member.voice.channel;
@@ -433,9 +436,8 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   	if(!message.member.voice.channel)
 		return message.inlineReply("You need to join a voice channel")
 	const noneEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("The queue is empty ;-;");
-	const queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Queue").setDescription(`${serverQueue.songs}`).addFields({ name: "Now Playing:", 	value: `${serverQueue.songs[0].title | ${serverQueue.songs[0].url}`}).setFooter("Satone").setTimestamp()
-  	if(!serverQueue) return message.inlineReply("There is no queue")
-	
+  	if(!serverQueue) return message.inlineReply(noneEmbed)
+	const queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`serverQueue.songs.title`).addField({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
 	message.inlineReply(queueEmbed)
   	
   }
