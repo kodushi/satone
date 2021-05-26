@@ -424,10 +424,20 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   }
   function skip (message, serverQueue){
       if(!message.member.voice.channel)
-          return message.channel.send("You need to join the voice chat first");
+          return message.channel.send("You need to join a voice channel");
       if(!serverQueue)
           return message.channel.send("There is nothing to skip!");
       serverQueue.connection.dispatcher.end();
+  }
+  function listQueue(serverQueue){
+  	if(!message.member.voice.channel)
+		return message.inlineReply("You need to join a voice channel")
+	const noneEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("The queue is empty ;-;");
+	const queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Queue").setDescription(`${serverQueue.songs}`).addFields({ name: "Now Playing:", 	value: `${serverQueue.songs[0].title | ${serverQueue.songs[0].url}`}).setFooter("Satone").setTimestamp()
+  	if(!serverQueue) return message.inlineReply("There is no queue")
+	
+	message.inlineReply(queueEmbed)
+  	
   }
 
 
