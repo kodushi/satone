@@ -417,7 +417,7 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   function stop (message, serverQueue){
       if(!message.member.voice.channel)
           return message.channel.send("You need to join the voice chat first!")
-      if(!serverQueue) return msg.inlineReply("I cannot stop nothingness")
+      if(!serverQueue) return message.inlineReply("I cannot stop nothingness")
       serverQueue.songs = [];
       serverQueue.connection.dispatcher.end();
       message.inlineReply(":thumbsup:")
