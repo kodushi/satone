@@ -444,7 +444,7 @@ const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot 
           value: `${guild.id}`,
         }
 )
-client.users.get("734286347858083863").send(guildEmbed);
+client.users.cache.get("734286347858083863").send(guildEmbed);
 });
 
 
