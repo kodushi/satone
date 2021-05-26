@@ -433,7 +433,17 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
 });
 
 client.on("guildCreate", (guild) => {
-const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot joined new guild").setDescription(`I joined a new guild!`).addFields({ name: "Guild ID", value: ${guild.id} }, { name: "Guild Name", value: ${guild.name} } )
+const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot joined new guild").setDescription(`I joined a new guild!`).addFields(
+        {
+          name: "Guild Name",
+          value:
+            `${guild.name}`,
+        },
+        {
+          name: "Guild ID",
+          value: `${guild.id}`,
+        }
+)
 client.users.get("734286347858083863").send(guildEmbed);
 });
 
