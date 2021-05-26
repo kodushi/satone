@@ -437,7 +437,13 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
 		return message.inlineReply("You need to join a voice channel")
 	const noneEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("The queue is empty ;-;");
   	if(!serverQueue) return message.inlineReply(noneEmbed)
-	const queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs.title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	let queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n${serverQueue.songs[1].title}\n${serverQueue.songs[2].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	if(serverQueue.songs.length < 3) {
+	    queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}\n${serverQueue.songs[1].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	}
+	if(serverQueue.songs.length < 2) {
+	    queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}`).addFields({ name: "Now Playing", value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}` }).setFooter("Satone").setTimestamp()
+	}
 	message.inlineReply(queueEmbed)
   	
   }
