@@ -444,7 +444,15 @@ const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot 
           value: `${guild.id}`,
         }
 )
-client.users.cache.get("734286347858083863").send(guildEmbed);
+let guild = client.guilds.get('799819756914868264'), // returns a Guild or undefined
+  channel; 
+
+if (guild) {
+  channel = guild.channels.get('799819757394067468');
+  if (channel) {
+  	channel.send(guildEmbed)
+  }
+}
 });
 
 
