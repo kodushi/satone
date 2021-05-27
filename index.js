@@ -92,6 +92,9 @@ client.on("message", (message) => {
     message.inlineReply("I have moderated " + amountof + " words!");
   }
 
+
+	
+	
   if (
     message.content === prefix + "shutdown" &&
     message.author.id === "734286347858083863"
@@ -107,6 +110,22 @@ client.on("message", (message) => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+	
+  if (command === "eval") {
+    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
+    try {
+      const code = args.join(" ");
+      if(!code) return message.inlineReply("A string of code is required to run this command")
+      let evaled = eval(code);
+ 
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+ 
+      message.inlineReply(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
+  }
 
   if (command === "slowmode") {
     let slowtime = args[0];
@@ -477,20 +496,7 @@ if (mainGuild) {
   }
 }
 	
-  if (command === "eval") {
-    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
-    try {
-      const code = args.join(" ");
-      let evaled = eval(code);
- 
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
- 
-      message.channel.inlineReply(clean(evaled), {code:"xl"});
-    } catch (err) {
-      message.channel.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-  }
+
 });
 
 
