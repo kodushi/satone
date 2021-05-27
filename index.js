@@ -432,22 +432,6 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   }
 
 
-});
-
-client.on("guildCreate", (guild) => {
-const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot joined new guild").setDescription(`I joined a new guild!`).addFields(
-        {
-          name: "Guild Name",
-          value:
-            `${guild.name}`,
-        },
-        {
-          name: "Guild ID",
-          value: `${guild.id}`,
-        }
-)
-
-
 function clean(text) {
   if (typeof(text) === "string")
     return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
@@ -471,6 +455,23 @@ if (command === "eval") {
       message.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
     }
   }
+	
+
+});
+
+client.on("guildCreate", (guild) => {
+const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot joined new guild").setDescription(`I joined a new guild!`).addFields(
+        {
+          name: "Guild Name",
+          value:
+            `${guild.name}`,
+        },
+        {
+          name: "Guild ID",
+          value: `${guild.id}`,
+        }
+)
+
 
 
 let mainGuild = client.guilds.cache.get('799819756914868264'), // returns a Guild or undefined
