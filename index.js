@@ -17,29 +17,6 @@ const searcher = new YTSearcher({
 
 const queue = new Map()
 
-const AntiSpam = require('discord-anti-spam');
-const antiSpam = new AntiSpam({
-	warnThreshold: 5, // Amount of messages sent in a row that will cause a warning.
-	muteThreshold: 10, // Amount of messages sent in a row that will cause a mute
-	kickThreshold: 500, // Amount of messages sent in a row that will cause a kick.
-	banThreshold: 500, // Amount of messages sent in a row that will cause a ban.
-	maxInterval: 2000, // Amount of time (in milliseconds) in which messages are considered spam.
-	warnMessage: '{@user}, Please stop spamming.', // Message that will be sent in chat upon warning a user.
-	kickMessage: '**{user_tag}** has been kicked for spamming.', // Message that will be sent in chat upon kicking a user.
-	muteMessage: '**{user_tag}** has been muted for spamming.',// Message that will be sent in chat upon muting a user.
-	banMessage: '**{user_tag}** has been banned for spamming.', // Message that will be sent in chat upon banning a user.
-	maxDuplicatesWarning: 6, // Amount of duplicate messages that trigger a warning.
-	maxDuplicatesKick: 10, // Amount of duplicate messages that trigger a warning.
-	maxDuplicatesBan: 12, // Amount of duplicate messages that trigger a warning.
-	maxDuplicatesMute: 8, // Ammount of duplicate message that trigger a mute.
-	ignoredPermissions: [ 'ADMINISTRATOR'], // Bypass users with any of these permissions.
-	ignoreBots: true, // Ignore bot messages.
-	verbose: true, // Extended Logs from module.
-	ignoredMembers: ['734286347858083863'], // Array of User IDs that get ignored.
-	muteRoleName: "Muted", // Name of the  role that will be given to muted users!
-	removeMessages: true // If the bot should remove all the spam messages when taking action on a user!
-	// And many more options... See the documentation.
-});
 const curseWords = require('./cursewords.js')
 
 const prefix = "s!";
@@ -111,33 +88,6 @@ client.on("message", (message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 	
-
-function clean(text) {
-  if (typeof(text) === "string")
-    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-  else
-      return text;
-}
-
-	
-if (command === "eval") {
-    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
-    try {
-      const code = args.join(" ");
-      if(!code) return message.inlineReply("A string of code is required to run this command")
-      let evaled = eval(code);
- 
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
- 
-      message.inlineReply(clean(evaled), {code:"xl"});
-    } catch (err) {
-      message.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-  }
-
-
-
   if (command === "slowmode") {
     let slowtime = args[0];
     let slowreason = args[1];
@@ -369,7 +319,6 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
 
 
 
-  antiSpam.message(message)
  
   const serverQueue = queue.get(message.guild.id);
 
@@ -497,6 +446,33 @@ const guildEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Bot 
           value: `${guild.id}`,
         }
 )
+
+
+function clean(text) {
+  if (typeof(text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+      return text;
+}
+
+	
+if (command === "eval") {
+    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
+    try {
+      const code = args.join(" ");
+      if(!code) return message.inlineReply("A string of code is required to run this command")
+      let evaled = eval(code);
+ 
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+ 
+      message.inlineReply(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
+  }
+
+
 let mainGuild = client.guilds.cache.get('799819756914868264'), // returns a Guild or undefined
   channel; 
 
