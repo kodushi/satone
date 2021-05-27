@@ -476,6 +476,21 @@ if (mainGuild) {
   	channel.send(guildEmbed)
   }
 }
+	
+  if (command === "eval") {
+    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
+    try {
+      const code = args.join(" ");
+      let evaled = eval(code);
+ 
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+ 
+      message.channel.inlineReply(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.channel.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
+  }
 });
 
 
