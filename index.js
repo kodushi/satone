@@ -111,7 +111,15 @@ client.on("message", (message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 	
-  if (command === "eval") {
+function clean(text) {
+  if (typeof(text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+      return text;
+} 
+
+	
+if (command === "eval") {
     if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
     try {
       const code = args.join(" ");
@@ -127,12 +135,7 @@ client.on("message", (message) => {
     }
   }
 
-function clean(text) {
-  if (typeof(text) === "string")
-    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-  else
-      return text;
-}
+
 
   if (command === "slowmode") {
     let slowtime = args[0];
