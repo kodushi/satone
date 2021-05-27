@@ -432,29 +432,6 @@ if(member.roles.highest.position > message.guild.members.resolve(client.user).ro
   }
 
 
-function clean(text) {
-  if (typeof(text) === "string")
-    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-  else
-      return text;
-}
-
-	
-if (command === "eval") {
-    if(message.author.id !== "734286347858083863") return message.inlineReply("Only bot owners and developers may run this command");
-    try {
-      const code = args.join(" ");
-      if(!code) return message.inlineReply("A string of code is required to run this command")
-      let evaled = eval(code);
- 
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
- 
-      message.inlineReply(clean(evaled), {code:"xl"});
-    } catch (err) {
-      message.inlineReply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-  }
 	
 
 });
