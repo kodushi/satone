@@ -2,7 +2,7 @@ const { Client } = require("discord.js");
 const Discord = require("discord.js");
 const client = new Client({
   allowedMentions: {
-    // set repliedUser value to `false` to turn off the mention by default
+    // set repliedUser value to `false` to turn off the mention by defaul
     repliedUser: true,
   },
 });
