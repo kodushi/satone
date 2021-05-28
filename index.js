@@ -202,7 +202,7 @@ if (command === "ban") {
         if (user.bannable) return message.inlineReply("I cannot ban this user");
         if (!message.member.guild.me.hasPermission("SEND_MESSAGES"))
             return message.author.send("I cannot send messages in that channel");
-        if (isNaN(banlong) && banlong) return message.inlineReply("Second argument must be a time. (c!ban <time (default 7 days)> <reason (optional)>)")
+        if (isNaN(banlong) && banlong) return message.inlineReply("Second argument must be a time. (c!ban <Days of messages to be deleted> <reason (optional)>)")
         if (!banlong) {
             banlong = 7;
         }
@@ -211,6 +211,7 @@ if (command === "ban") {
             banreply = `Banned user ${user.tag} for ${banlong} days. No reason was given`;
         }
         if (banlong < 0) return message.inlineReply("I can't ban for negative days. (Please use a positive number)")
+	if (banlong > 7) return message.inlineReply("Maximum is 7 days")
         const embed = new Discord.MessageEmbed()
             .setColor("#FF0000")
             .setTitle("You have been banned.")
