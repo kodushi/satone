@@ -587,7 +587,7 @@ if (command === "softban" || command === "sb") {
         user.send(embed);
         message.inlineReply(banreply);
         member.ban({
-            days: banlong,
+            days: 1,
             reason: banreason
         });
 	setTimeout(() => {
