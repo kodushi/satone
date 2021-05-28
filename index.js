@@ -547,6 +547,53 @@ if (command === "ban") {
         }
 	
 }
+	
+if (command === "softban" || command === "sb") {
+        for (var i = 0; i < curseWords.length; i++) {
+            if (message.author.id === blacklistedUser[i]) {
+                return message.inlineReply(blEmbed);
+            }
+        }
+        const user = message.mentions.users.first();
+        let banreason = args[1];
+        if (!message.member.hasPermission("BAN_MEMBERS"))
+            return message.inlineReply("You do not have permission to ban members");
+        if (!message.member.guild.me.hasPermission("BAN_MEMBERS"))
+            return message.inlineReply(
+                "I don't have the required permission to softban (ban) users. Please fix this in settings"
+            );
+        if (!user) return message.inlineReply("Please mention a valid user");
+        if (user === client.user) return message.inlineReply("Why would you ban me :(");
+        if (user.bannable) return message.inlineReply("I cannot softban this user");
+        if (!message.member.guild.me.hasPermission("SEND_MESSAGES"))
+            return message.author.send("I cannot send messages in that channel");
+        let banreply = `Softbanned user ${user.tag} for ${banreason}.`;
+        if (!banreason) {
+            banreply = `Softbanned user ${user.tag}. No reason was given`;
+        }
+        const embed = new Discord.MessageEmbed()
+            .setColor("#FF0000")
+            .setTitle("You have been softbanned.")
+            .setDescription("You may rejoin with an invite")
+            .addFields({
+                name: "Reason",
+                value: banreason
+            })
+            .setFooter("Satone")
+            .setTimestamp();
+        const member = message.guild.members.resolve(user);
+        if (member.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.inlineReply("My role is too low :c");
+	const memberid = user.id
+        user.send(embed);
+        message.inlineReply(banreply);
+        member.ban({
+            days: banlong,
+            reason: banreason
+        });
+	setTimeout(() => {
+		message.guild.members.unban(memberid, "Softban • Satone")
+	})
+    }
 
 });
 
