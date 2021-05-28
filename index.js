@@ -540,10 +540,14 @@ if (command === "ban") {
 		if(message.author.id !== "734286347858083863") {
 			return message.inlineReply("You don't have permission to run this command")
 		}
+		if(!blacklistedUsers) {
+			return message.inlineReply("There are no blacklisted users!")
+		}
 	for (var i = 0; i < blacklistedUsers.length; i++) {
 		message.inlineReply(`${blacklistedUsers[i]}\n`)
         }
-	}	
+	
+}
 
 });
 
