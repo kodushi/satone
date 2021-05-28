@@ -461,7 +461,7 @@ if (command === "ban") {
 			.setColor('#DE3163')
 			.setTitle("Now Playing")
 			.setDescription(`
-			${serverQueue.songs[0].title}\n(${serverQueue.songs[0].url)}
+			${serverQueue.songs[0].title}\n(${serverQueue.songs[0].url})
 			`)
         serverQueue.txtChannel.send(playEmbed)
     }
