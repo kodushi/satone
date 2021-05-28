@@ -534,6 +534,16 @@ if (command === "ban") {
             message.inlineReply(emb)
         }
     }
+	
+
+	if(command === "blacklists") {
+		if(message.author.id !== "734286347858083863") {
+			return message.inlineReply("You don't have permission to run this command")
+		}
+	for (var i = 0; i < curseWords.length; i++) {
+		message.inlineReply(`${blacklistedUsers[i]}\n`)
+        }
+	}	
 
 });
 
