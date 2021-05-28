@@ -438,7 +438,7 @@ if (command === "ban") {
                 }
             } else {
                 serverQueue.songs.push(song);
-                const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title} | ${song.url}`)
+                const addEmbed = new Discord.MessageEmbed().setColor('#DE3163').setTitle("Song Added").setDescription(`${song.title}\n(${song.url})`)
                 return message.channel.send(addEmbed);
             }
         }
@@ -461,7 +461,7 @@ if (command === "ban") {
 			.setColor('#DE3163')
 			.setTitle("Now Playing")
 			.setDescription(`
-			${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}
+			${serverQueue.songs[0].title}\n(${serverQueue.songs[0].url)}
 			`)
         serverQueue.txtChannel.send(playEmbed)
     }
@@ -505,7 +505,7 @@ if (command === "ban") {
         if (serverQueue.songs.length === 1) {
             queueEmbed = new Discord.MessageEmbed().setColor("#DE3163").setTitle("Satone | Queue").setDescription(`${serverQueue.songs[0].title}`).addFields({
                 name: "Now Playing",
-                value: `${serverQueue.songs[0].title} | ${serverQueue.songs[0].url}`
+                value: `${serverQueue.songs[0].title}\n(${serverQueue.songs[0].url})`
             }).setFooter("Satone").setTimestamp()
         }
         message.inlineReply(queueEmbed)
