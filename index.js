@@ -61,7 +61,6 @@ client.on("message", (message) => {
 //  slur detection   
 for (var i = 0; i < curseWords.length; i++) {
         if (message.content.toLowerCase().includes(curseWords[i]) && !message.author.bot) {
-            amountof++;
             let censored = message.content;
             let user = message.author;
             if (!message.member.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I don't have the required permissions to censor this.")
